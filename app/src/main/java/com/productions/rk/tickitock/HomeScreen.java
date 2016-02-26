@@ -20,6 +20,8 @@ public class HomeScreen extends Activity {
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/3Dumb.ttf");
         WelcomeText.setTypeface(custom_font);
 
+        //Try Delay and Loading Property for HomeScreen
+
         // Make HomeScreen clickable
         RelativeLayout HomeScreen = (RelativeLayout)findViewById(R.id.HomeScreen);
         HomeScreen.setOnClickListener(new View.OnClickListener() {
