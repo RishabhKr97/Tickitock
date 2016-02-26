@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Tickitock</string>
+    <string name="welcometext">by Jatin and rK</string>
+    <string name="singleplayerbuttontext">Single Player</string>
+    <string name="twoplayerbuttontext">Two Players</string>
+    <string name="statsbuttontext">Stats</string>
+    <string name="supereasybuttontext">Super Easy</string>
+    <string name="easybuttontext">Easy</string>
+    <string name="bluetoothbuttontext">via Bluetooth</string>
+    <string name="samedevicebuttontext">Same Device</string>
+    <string name="pl1">Player 1</string>
+    <string name="pl2">Player 2</string>
+</resources>

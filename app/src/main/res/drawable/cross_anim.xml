@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+    <item android:drawable="@drawable/cframe0"
+        android:duration="11"
+        />
+    <item android:drawable="@drawable/cframe1"
+        android:duration="11"
+        />
+
+    <item android:drawable="@drawable/cframe2"
+        android:duration="11"
+        />
+
+    <item android:drawable="@drawable/cframe3"
+        android:duration="11"
+        />
+
+    <item android:drawable="@drawable/cframe4"
+        android:duration="11"
+        />
+
+    <item android:drawable="@drawable/cframe5"
+        android:duration="11"
+        />
+
+    <item android:drawable="@drawable/cframe6"
+        android:duration="11"
+        />
+
+    <item android:drawable="@drawable/cframe7"
+        android:duration="11"
+        />
+
+    <item android:drawable="@drawable/cframe8"
+        android:duration="11"
+        />
+
+
+</animation-list>
