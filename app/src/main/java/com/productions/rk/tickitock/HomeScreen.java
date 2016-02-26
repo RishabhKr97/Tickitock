@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,13 +23,13 @@ public class HomeScreen extends Activity {
 
         //Try Delay and Loading Property for HomeScreen
 
-        // Make HomeScreen clickable
-        RelativeLayout HomeScreen = (RelativeLayout)findViewById(R.id.HomeScreen);
-        HomeScreen.setOnClickListener(new View.OnClickListener() {
+       // 5s delay no animation
+        Handler handler=new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
+            public void run() {
                 startActivity(new Intent(HomeScreen.this, OptionScreen.class));
             }
-        });
+        }, 5000);
     }
 }
