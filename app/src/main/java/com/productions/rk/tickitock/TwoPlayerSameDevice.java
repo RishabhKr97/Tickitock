@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TwoPlayerSameDevice extends Activity implements View.OnClickListener {
 
@@ -135,6 +135,7 @@ public class TwoPlayerSameDevice extends Activity implements View.OnClickListene
             gameActive=false;
         }
         if(!gameActive){
+
             LayoutInflater inflater= (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View ResultAlertBox =inflater.inflate(R.layout.layout_game_result_2p_same_device,null);
             ReplayButton=(Button)ResultAlertBox.findViewById(R.id.ReplayButton);
@@ -158,7 +159,15 @@ public class TwoPlayerSameDevice extends Activity implements View.OnClickListene
                     TwoPlayerSameDevice.this.finish();
                 }
             });
-            alertDialog.show();
+
+            // 1.8s delay before showing alert dialog
+            Handler handler=new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    alertDialog.show();
+                }
+            }, 1800);
 
         }
 

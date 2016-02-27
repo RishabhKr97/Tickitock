@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.Random;
 
 public class SinglePlayerSuperEasy extends Activity implements View.OnClickListener {
@@ -28,7 +26,7 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
     int filled;
     int playerOnewin=0,playerTwowin=0;
     int state[]= {0,0,0,0,0,0,0,0,0};
-    boolean gameActive;
+    boolean gameActive,playermovedfirst=false;
 
 
 
@@ -60,7 +58,7 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
         position[8] = (ImageView) findViewById(R.id.position8);
         position[8].setOnClickListener(this);
 
-        initialiseBoard();
+        beginNewGame();
     }
 
     private void beginNewGame() {
@@ -68,7 +66,6 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
         for(int i=0;i<9;i++){
             state[i]=0;
         }
-        activeplayer=1;
         filled=0;
         position[0].setBackgroundResource(android.R.color.white);
         position[1].setBackgroundResource(android.R.color.white);
@@ -79,23 +76,7 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
         position[6].setBackgroundResource(android.R.color.white);
         position[7].setBackgroundResource(android.R.color.white);
         position[8].setBackgroundResource(android.R.color.white);
-        player1moveindicator.setBackgroundColor(Color.argb(255, 54, 145, 32));
-        player2moveindicator.setBackgroundColor(Color.argb(255, 222, 237, 222));
-
-    }
-
-    public void initialiseBoard()
-    {
-        filled=0;
-        gameActive = true;
-        for(int i : state)
-        {
-            state[i]= 0;
-        }
-
-        // Player 1 is user and Player 2 is bot
-
-        if(activeplayer==1) {
+        if(playermovedfirst) {
             player2moveindicator.setBackgroundColor(Color.argb(255,54,145,32));
             player1moveindicator.setBackgroundColor(Color.argb(255, 222, 237, 222));
             activeplayer=2;
@@ -112,12 +93,15 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
                     }
                 }, 800);
             }
+            playermovedfirst = false;
         }
         else {
             activeplayer = 1;
+            playermovedfirst = true;
             player1moveindicator.setBackgroundColor(Color.argb(255,54,145,32));
             player2moveindicator.setBackgroundColor(Color.argb(255,222,237,222));
         }
+
     }
 
     public void onClick(View view) {
@@ -200,7 +184,14 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
                     SinglePlayerSuperEasy.this.finish();
                 }
             });
-            alertDialog.show();
+            // 1.8s delay before showing alert dialog
+            Handler handler=new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    alertDialog.show();
+                }
+            }, 1800);
 
 
         }
