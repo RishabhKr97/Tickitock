@@ -15,8 +15,8 @@
         android:background="@drawable/welcomewallpaper"
         android:id="@+id/welcomeImageId"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
         android:layout_width="300dp"
         android:layout_height="380dp"
         android:contentDescription="@null" />
@@ -26,9 +26,19 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/welcometext"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:id="@+id/welcomeId"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="0dp" />
+
+    <WebView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/webView"
+        android:layout_below="@+id/welcomeImageId"
+        android:layout_above="@+id/welcomeId"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
