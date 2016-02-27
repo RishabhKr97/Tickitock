@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class HomeScreen extends Activity {
@@ -23,13 +21,13 @@ public class HomeScreen extends Activity {
 
         //Try Delay and Loading Property for HomeScreen
 
-       // 5s delay no animation
+       // 3s delay no animation
         Handler handler=new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 startActivity(new Intent(HomeScreen.this, OptionScreen.class));
             }
-        }, 5000);
+        }, 3000);
     }
 }
