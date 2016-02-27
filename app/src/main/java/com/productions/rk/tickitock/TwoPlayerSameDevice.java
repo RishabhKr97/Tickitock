@@ -1,9 +1,12 @@
 package com.productions.rk.tickitock;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,16 +15,16 @@ import android.widget.Toast;
 
 public class TwoPlayerSameDevice extends Activity implements View.OnClickListener {
 
-    ImageView img1,img2,img3;
+    ImageView img1,img2,img3,position0,position1,position2,position3,position4,position5,position6,position7,position8;
     TextView player1score,player2score;
     String winner="Game Drawn";
     AnimationDrawable anim,win1,win2,win3;
-    Button player1moveindicator,player2moveindicator;
-    int activeplayer = 2;
+    Button player1moveindicator,player2moveindicator,ReplayButton,exitButton;
+    int activeplayer;
     int filled;
     int playerOnewin=0,playerTwowin=0;
     int state[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-    boolean gameActive=true;
+    boolean gameActive;
 
 
 
@@ -33,47 +36,48 @@ public class TwoPlayerSameDevice extends Activity implements View.OnClickListene
         player2moveindicator = (Button) findViewById(R.id.player2moveindicator);
         player1score = (TextView) findViewById(R.id.player1score);
         player2score = (TextView) findViewById(R.id.player2score);
-        ImageView position0 = (ImageView) findViewById(R.id.position0);
+        position0 = (ImageView) findViewById(R.id.position0);
         position0.setOnClickListener(this);
-        ImageView position1 = (ImageView) findViewById(R.id.position1);
+        position1 = (ImageView) findViewById(R.id.position1);
         position1.setOnClickListener(this);
-        ImageView position2 = (ImageView) findViewById(R.id.position2);
+        position2 = (ImageView) findViewById(R.id.position2);
         position2.setOnClickListener(this);
-        ImageView position3 = (ImageView) findViewById(R.id.position3);
+        position3 = (ImageView) findViewById(R.id.position3);
         position3.setOnClickListener(this);
-        ImageView position4 = (ImageView) findViewById(R.id.position4);
+        position4 = (ImageView) findViewById(R.id.position4);
         position4.setOnClickListener(this);
-        ImageView position5 = (ImageView) findViewById(R.id.position5);
+        position5 = (ImageView) findViewById(R.id.position5);
         position5.setOnClickListener(this);
-        ImageView position6 = (ImageView) findViewById(R.id.position6);
+        position6 = (ImageView) findViewById(R.id.position6);
         position6.setOnClickListener(this);
-        ImageView position7 = (ImageView) findViewById(R.id.position7);
+        position7 = (ImageView) findViewById(R.id.position7);
         position7.setOnClickListener(this);
-        ImageView position8 = (ImageView) findViewById(R.id.position8);
+        position8 = (ImageView) findViewById(R.id.position8);
         position8.setOnClickListener(this);
-        initialiseBoard();
+        beginNewGame();
     }
-
-    public void initialiseBoard()
-    {
-        if(activeplayer==1) {
-            activeplayer = 2;
-            player2moveindicator.setBackgroundColor(Color.argb(255,54,145,32));
-            player1moveindicator.setBackgroundColor(Color.argb(255,222,237,222));
+    private void beginNewGame() {
+        gameActive=true;
+        for(int i=0;i<9;i++){
+            state[i]=0;
         }
-        else {
-            activeplayer = 1;
-            player1moveindicator.setBackgroundColor(Color.argb(255,54,145,32));
-            player2moveindicator.setBackgroundColor(Color.argb(255,222,237,222));
-        }
-
+        activeplayer=1;
         filled=0;
+        position0.setBackgroundResource(android.R.color.white);
+        position1.setBackgroundResource(android.R.color.white);
+        position2.setBackgroundResource(android.R.color.white);
+        position3.setBackgroundResource(android.R.color.white);
+        position4.setBackgroundResource(android.R.color.white);
+        position5.setBackgroundResource(android.R.color.white);
+        position6.setBackgroundResource(android.R.color.white);
+        position7.setBackgroundResource(android.R.color.white);
+        position8.setBackgroundResource(android.R.color.white);
+        player1moveindicator.setBackgroundColor(Color.argb(255,54,145,32));
+        player2moveindicator.setBackgroundColor(Color.argb(255,222,237,222));
 
-        for(int i : state)
-        {
-            state[i]= 0;
-        }
     }
+
+
 
     public void onClick(View view) {
         ImageView counter = (ImageView) view;
@@ -131,9 +135,31 @@ public class TwoPlayerSameDevice extends Activity implements View.OnClickListene
             gameActive=false;
         }
         if(!gameActive){
+            LayoutInflater inflater= (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View ResultAlertBox =inflater.inflate(R.layout.layout_game_result_2p_same_device,null);
+            ReplayButton=(Button)ResultAlertBox.findViewById(R.id.ReplayButton);
+            exitButton=(Button)ResultAlertBox.findViewById(R.id.ExitButton);
+            final AlertDialog.Builder builer=new AlertDialog.Builder(this);
+            final AlertDialog alertDialog=builer.create();
+            alertDialog.setView(ResultAlertBox);
+            alertDialog.setCancelable(false);
+            ReplayButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    beginNewGame();
+                    alertDialog.cancel();
 
-            // make Alert Dialog for Restart and Exit
-            Toast.makeText(getApplicationContext(), winner, Toast.LENGTH_LONG).show();
+                }
+            });
+            exitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(TwoPlayerSameDevice.this, OptionScreen.class));
+                    TwoPlayerSameDevice.this.finish();
+                }
+            });
+            alertDialog.show();
+
         }
 
     }
@@ -182,6 +208,11 @@ public class TwoPlayerSameDevice extends Activity implements View.OnClickListene
             player2score.setText(String.valueOf(playerTwowin));
         }
 
+    }
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(TwoPlayerSameDevice.this,OptionScreen.class));
+        TwoPlayerSameDevice.this.finish();
     }
 
 }
