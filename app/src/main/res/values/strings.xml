@@ -8,6 +8,8 @@
     <string name="easybuttontext">Easy</string>
     <string name="bluetoothbuttontext">via Bluetooth</string>
     <string name="samedevicebuttontext">Same Device</string>
+    <string name="replay">Play Again</string>
+    <string name="exit">Back to Menu</string>
     <string name="pl1">Player 1</string>
     <string name="pl2">Player 2</string>
     <string name="pl1forsingleplayer">You</string>
