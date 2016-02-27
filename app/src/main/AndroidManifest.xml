@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".OptionScreen" />
-        <activity android:name=".TwoPlayerSameDevice"></activity>
+        <activity android:name=".TwoPlayerSameDevice" />
+        <activity android:name=".SinglePlayerSuperEasy"></activity>
     </application>
 
 </manifest>

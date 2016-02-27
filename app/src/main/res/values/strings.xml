@@ -10,4 +10,6 @@
     <string name="samedevicebuttontext">Same Device</string>
     <string name="pl1">Player 1</string>
     <string name="pl2">Player 2</string>
+    <string name="pl1forsingleplayer">You</string>
+    <string name="pl2forsingleplayer">Bot</string>
 </resources>
