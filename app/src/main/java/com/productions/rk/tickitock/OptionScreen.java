@@ -66,6 +66,8 @@ public class OptionScreen extends Activity {
             public void onClick(View v) {
                 //change to game activity
                 startActivity(new Intent(OptionScreen.this, SinglePlayerSuperEasy.class));
+                //CLose Menu
+                OptionScreen.this.finish();
                 dialog.cancel();
             }
         });
@@ -109,6 +111,8 @@ public class OptionScreen extends Activity {
             public void onClick(View v) {
                 //switch to game activity
                 startActivity(new Intent(OptionScreen.this, TwoPlayerSameDevice.class));
+                //Close Menu when opening 2p game
+                OptionScreen.this.finish();
                 dialog.cancel();
             }
         });

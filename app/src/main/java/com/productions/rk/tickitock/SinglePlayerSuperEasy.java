@@ -1,10 +1,13 @@
 package com.productions.rk.tickitock;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,7 +23,7 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
     TextView player1score,player2score;
     String winner="Game Drawn";
     AnimationDrawable anim,win1,win2,win3;
-    Button player1moveindicator,player2moveindicator;
+    Button player1moveindicator,player2moveindicator,ReplayButton,exitButton;
     int activeplayer = 2; // Player 1 is user and Player 2 is bot
     int filled;
     int playerOnewin=0,playerTwowin=0;
@@ -58,6 +61,27 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
         position[8].setOnClickListener(this);
 
         initialiseBoard();
+    }
+
+    private void beginNewGame() {
+        gameActive=true;
+        for(int i=0;i<9;i++){
+            state[i]=0;
+        }
+        activeplayer=1;
+        filled=0;
+        position[0].setBackgroundResource(android.R.color.white);
+        position[1].setBackgroundResource(android.R.color.white);
+        position[2].setBackgroundResource(android.R.color.white);
+        position[3].setBackgroundResource(android.R.color.white);
+        position[4].setBackgroundResource(android.R.color.white);
+        position[5].setBackgroundResource(android.R.color.white);
+        position[6].setBackgroundResource(android.R.color.white);
+        position[7].setBackgroundResource(android.R.color.white);
+        position[8].setBackgroundResource(android.R.color.white);
+        player1moveindicator.setBackgroundColor(Color.argb(255, 54, 145, 32));
+        player2moveindicator.setBackgroundColor(Color.argb(255, 222, 237, 222));
+
     }
 
     public void initialiseBoard()
@@ -153,9 +177,32 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
         }
 
         if(!gameActive){
+            LayoutInflater inflater= (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View ResultAlertBox =inflater.inflate(R.layout.layout_game_result_2p_same_device,null);
+            ReplayButton=(Button)ResultAlertBox.findViewById(R.id.ReplayButton);
+            exitButton=(Button)ResultAlertBox.findViewById(R.id.ExitButton);
+            final AlertDialog.Builder builer=new AlertDialog.Builder(this);
+            final AlertDialog alertDialog=builer.create();
+            alertDialog.setView(ResultAlertBox);
+            alertDialog.setCancelable(false);
+            ReplayButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    beginNewGame();
+                    alertDialog.cancel();
 
-            // make Alert Dialog for Restart and Exit
-            Toast.makeText(getApplicationContext(), winner, Toast.LENGTH_LONG).show();
+                }
+            });
+            exitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(SinglePlayerSuperEasy.this, OptionScreen.class));
+                    SinglePlayerSuperEasy.this.finish();
+                }
+            });
+            alertDialog.show();
+
+
         }
 
         else if(activeplayer==2){
@@ -221,5 +268,9 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
         }
 
     }
-
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(SinglePlayerSuperEasy.this,OptionScreen.class));
+        SinglePlayerSuperEasy.this.finish();
+    }
 }
