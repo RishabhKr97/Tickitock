@@ -76,6 +76,9 @@ public class OptionScreen extends Activity {
             @Override
             public void onClick(View v) {
                 //change to game activity
+                startActivity(new Intent(OptionScreen.this, SinglePlayerEasy.class));
+                //CLose Menu
+                OptionScreen.this.finish();
                 dialog.cancel();
             }
         });
