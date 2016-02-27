@@ -29,8 +29,7 @@
         android:textSize="30sp"
         android:id="@+id/welcomeId"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="0dp" />
+        android:layout_centerHorizontal="true" />
 
     <WebView
         android:layout_width="100dp"
@@ -41,4 +40,5 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
