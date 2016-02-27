@@ -14,4 +14,17 @@
     <string name="pl2">Player 2</string>
     <string name="pl1forsingleplayer">You</string>
     <string name="pl2forsingleplayer">Bot</string>
+    <string name="title_activity_stats">StatsActivity</string>
+    <string name="SEMode"><u>Super Easy Mode</u></string>
+    <string name="EMode"><u>Easy Mode</u></string>
+    <string name="SEWins">Wins</string>
+    <string name="SELoses">Loses</string>
+    <string name="SEDraws">Draws</string>
+    <string name="sps">1p Stats</string>
+    <string name="dps">2p Stats</string>
+    <string name="title_activity_stats2">StatsActivity2</string>
+    <string name="SDMode"><u>2p Same Device</u></string>
+    <string name="SDWins">Player1</string>
+    <string name="SDLoses">Player2</string>
+
 </resources>

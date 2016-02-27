@@ -3,6 +3,7 @@ package com.productions.rk.tickitock;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ public class TwoPlayerSameDevice extends Activity implements View.OnClickListene
     Button player1moveindicator,player2moveindicator,ReplayButton,exitButton;
     int activeplayer;
     int filled;
-    int playerOnewin=0,playerTwowin=0;
+    int playerOnewin=0,playerTwowin=0,draws;
     int state[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     boolean gameActive;
 
@@ -72,8 +73,8 @@ public class TwoPlayerSameDevice extends Activity implements View.OnClickListene
         position6.setBackgroundResource(android.R.color.white);
         position7.setBackgroundResource(android.R.color.white);
         position8.setBackgroundResource(android.R.color.white);
-        player1moveindicator.setBackgroundColor(Color.argb(255,54,145,32));
-        player2moveindicator.setBackgroundColor(Color.argb(255,222,237,222));
+        player1moveindicator.setBackgroundColor(Color.argb(255, 54, 145, 32));
+        player2moveindicator.setBackgroundColor(Color.argb(255, 222, 237, 222));
 
     }
 
@@ -133,6 +134,7 @@ public class TwoPlayerSameDevice extends Activity implements View.OnClickListene
 
         if(gameActive&&filled==9){
             gameActive=false;
+            draws++;
         }
         if(!gameActive){
 
@@ -155,6 +157,7 @@ public class TwoPlayerSameDevice extends Activity implements View.OnClickListene
             exitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    saveStats(playerOnewin,playerTwowin,draws);
                     startActivity(new Intent(TwoPlayerSameDevice.this, OptionScreen.class));
                     TwoPlayerSameDevice.this.finish();
                 }
@@ -218,8 +221,28 @@ public class TwoPlayerSameDevice extends Activity implements View.OnClickListene
         }
 
     }
+    private void saveStats(int wins,int loses,int draws){
+        SharedPreferences SEPrefs=getSharedPreferences("SAMEDEVICE", 2);
+        SharedPreferences.Editor SEprefEditor=SEPrefs.edit();
+        if(!SEPrefs.contains("WINS")) {
+            SEprefEditor.putString("WINS", String.valueOf(wins));
+            SEprefEditor.putString("LOSES", String.valueOf(loses));
+            SEprefEditor.putString("DRAWS", String.valueOf(draws));
+            SEprefEditor.apply();
+        }
+        else{
+            wins+=Integer.parseInt(SEPrefs.getString("WINS","0"));
+            loses+=Integer.parseInt(SEPrefs.getString("LOSES","0"));
+            draws+=Integer.parseInt(SEPrefs.getString("DRAWS","0"));
+            SEprefEditor.putString("WINS", String.valueOf(wins));
+            SEprefEditor.putString("LOSES", String.valueOf(loses));
+            SEprefEditor.putString("DRAWS", String.valueOf(draws));
+            SEprefEditor.apply();
+        }
+    }
     @Override
     public void onBackPressed() {
+        saveStats(playerOnewin,playerTwowin,draws);
         startActivity(new Intent(TwoPlayerSameDevice.this,OptionScreen.class));
         TwoPlayerSameDevice.this.finish();
     }

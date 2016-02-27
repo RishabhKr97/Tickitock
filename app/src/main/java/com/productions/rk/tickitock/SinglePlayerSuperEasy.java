@@ -3,6 +3,7 @@ package com.productions.rk.tickitock;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -24,7 +25,7 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
     Button player1moveindicator,player2moveindicator,ReplayButton,exitButton;
     int activeplayer = 2; // Player 1 is user and Player 2 is bot
     int filled;
-    int playerOnewin=0,playerTwowin=0;
+    int playerOnewin=0,playerTwowin=0,draws;
     int state[]= {0,0,0,0,0,0,0,0,0};
     boolean gameActive,playermovedfirst=false;
 
@@ -158,6 +159,7 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
 
         if(gameActive&&filled==9){
             gameActive=false;
+            draws++;
         }
 
         if(!gameActive){
@@ -180,6 +182,7 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
             exitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    saveStats(playerOnewin,playerTwowin,draws);
                     startActivity(new Intent(SinglePlayerSuperEasy.this, OptionScreen.class));
                     SinglePlayerSuperEasy.this.finish();
                 }
@@ -259,8 +262,28 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
         }
 
     }
+    private void saveStats(int wins,int loses,int draws){
+        SharedPreferences SEPrefs=getSharedPreferences("SUPEREASY", 0);
+        SharedPreferences.Editor SEprefEditor=SEPrefs.edit();
+        if(!SEPrefs.contains("WINS")) {
+            SEprefEditor.putString("WINS", String.valueOf(wins));
+            SEprefEditor.putString("LOSES", String.valueOf(loses));
+            SEprefEditor.putString("DRAWS", String.valueOf(draws));
+            SEprefEditor.apply();
+        }
+        else{
+            wins+=Integer.parseInt(SEPrefs.getString("WINS","0"));
+            loses+=Integer.parseInt(SEPrefs.getString("LOSES","0"));
+            draws+=Integer.parseInt(SEPrefs.getString("DRAWS","0"));
+            SEprefEditor.putString("WINS", String.valueOf(wins));
+            SEprefEditor.putString("LOSES", String.valueOf(loses));
+            SEprefEditor.putString("DRAWS", String.valueOf(draws));
+            SEprefEditor.apply();
+        }
+    }
     @Override
     public void onBackPressed() {
+        saveStats(playerOnewin,playerTwowin,draws);
         startActivity(new Intent(SinglePlayerSuperEasy.this,OptionScreen.class));
         SinglePlayerSuperEasy.this.finish();
     }

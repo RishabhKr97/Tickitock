@@ -34,6 +34,6 @@ public class HomeScreen extends Activity {
             public void run() {
                 startActivity(new Intent(HomeScreen.this, OptionScreen.class));
             }
-        }, 4000);
+        }, 3000);
     }
 }

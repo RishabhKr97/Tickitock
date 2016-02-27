@@ -2,6 +2,8 @@ package com.productions.rk.tickitock;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -40,9 +42,34 @@ public class OptionScreen extends Activity {
         statsbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Display Stats Activity
+                DisplayStasAlert();
             }
         });
+    }
+
+    private void DisplayStasAlert() {
+        LayoutInflater inflater=getLayoutInflater();
+        View statsAlertDialog=inflater.inflate(R.layout.stats_select_layout, null);
+        AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+        AlertDialog dialog=alertDialog.create();
+        dialog.setView(statsAlertDialog);
+        Button sps = (Button) statsAlertDialog.findViewById(R.id.singlePlayerStats);
+        Button dps = (Button) statsAlertDialog.findViewById(R.id.doublePlayerStats);
+        sps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(OptionScreen.this,StatsActivity.class));
+                OptionScreen.this.finish();
+            }
+        });
+        dps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(OptionScreen.this,StatsActivity2.class));
+                OptionScreen.this.finish();
+            }
+        });
+        dialog.show();
     }
 
     // Alert Box for button clicks
@@ -105,6 +132,7 @@ public class OptionScreen extends Activity {
             @Override
             public void onClick(View v) {
                 //Launch wifi game
+
                 dialog.cancel();
             }
         });
@@ -119,6 +147,7 @@ public class OptionScreen extends Activity {
                 dialog.cancel();
             }
         });
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 }
