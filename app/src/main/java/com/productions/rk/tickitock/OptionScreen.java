@@ -1,13 +1,20 @@
 package com.productions.rk.tickitock;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public class OptionScreen extends Activity {
@@ -48,6 +55,9 @@ public class OptionScreen extends Activity {
     }
 
     private void DisplayStasAlert() {
+
+        // **** REMOVE ALERT DIALOG FOR STATS *****
+
         LayoutInflater inflater=getLayoutInflater();
         View statsAlertDialog=inflater.inflate(R.layout.stats_select_layout, null);
         AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
@@ -77,10 +87,12 @@ public class OptionScreen extends Activity {
     public void DisplaySinglePlayerAlert(){
         LayoutInflater inflater = getLayoutInflater();
         View SinglePlayerLayout = inflater.inflate(R.layout.layout_single_player_options, null);
-        AlertDialog.Builder alertD = new AlertDialog.Builder(this);
-        alertD.setView(SinglePlayerLayout);
-        alertD.setCancelable(true);
-        final AlertDialog dialog = alertD.create();
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(SinglePlayerLayout);
+        dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.alertbackground));
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
 
         // setting buttons for single player options
         Button supereasy = (Button) SinglePlayerLayout.findViewById(R.id.supereasybutton);
@@ -116,10 +128,12 @@ public class OptionScreen extends Activity {
     public void DisplayTwoPlayerAlert(){
         LayoutInflater inflater = getLayoutInflater();
         View TwoPlayerLayout = inflater.inflate(R.layout.layout_two_player_options, null);
-        AlertDialog.Builder alertD = new AlertDialog.Builder(this);
-        alertD.setView(TwoPlayerLayout);
-        alertD.setCancelable(true);
-        final AlertDialog dialog = alertD.create();
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(TwoPlayerLayout);
+        dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.alertbackground));
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
 
         // setting up buttons
 
@@ -147,7 +161,7 @@ public class OptionScreen extends Activity {
                 dialog.cancel();
             }
         });
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         dialog.show();
     }
 }

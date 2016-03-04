@@ -1,15 +1,20 @@
 package com.productions.rk.tickitock;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -138,14 +143,19 @@ public class TwoPlayerSameDevice extends Activity implements View.OnClickListene
         }
         if(!gameActive){
 
-            LayoutInflater inflater= (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View ResultAlertBox =inflater.inflate(R.layout.layout_game_result_2p_same_device,null);
+            LayoutInflater inflater= getLayoutInflater();
+            View ResultAlertBox = inflater.inflate(R.layout.layout_game_result_2p_same_device, null);
+
+            final Dialog alertDialog = new Dialog(this);
+            alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertDialog.setContentView(ResultAlertBox);
+            alertDialog.setCancelable(false);
+            alertDialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.alertbackground));
+            alertDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+
             ReplayButton=(Button)ResultAlertBox.findViewById(R.id.ReplayButton);
             exitButton=(Button)ResultAlertBox.findViewById(R.id.ExitButton);
-            final AlertDialog.Builder builer=new AlertDialog.Builder(this);
-            final AlertDialog alertDialog=builer.create();
-            alertDialog.setView(ResultAlertBox);
-            alertDialog.setCancelable(false);
+
             ReplayButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -163,14 +173,14 @@ public class TwoPlayerSameDevice extends Activity implements View.OnClickListene
                 }
             });
 
-            // 1.8s delay before showing alert dialog
-            Handler handler=new Handler();
+            //0.5s delay before showing dialog
+            Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     alertDialog.show();
                 }
-            }, 1800);
+            }, 500);
 
         }
 

@@ -1,7 +1,9 @@
 package com.productions.rk.tickitock;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,8 +11,12 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +34,7 @@ public class SinglePlayerEasy extends Activity implements View.OnClickListener {
     int filled;
     int playerWins=0,playerLose=0,draw=0;
     int state[]= {0,0,0,0,0,0,0,0,0};
+    int countBotmove=0;
     boolean gameActive,playermovedfirst=false;
 
     //Declarations for MinMax Algo source file
@@ -74,6 +81,7 @@ public class SinglePlayerEasy extends Activity implements View.OnClickListener {
             state[i]=0;
         }
         filled=0;
+        countBotmove=0;
         gameBoard.newBoard();
         position[0].setBackgroundResource(android.R.color.white);
         position[1].setBackgroundResource(android.R.color.white);
@@ -98,6 +106,7 @@ public class SinglePlayerEasy extends Activity implements View.OnClickListener {
                         int mybotMove = botMove.nextInt(9);
                         while (state[mybotMove] != 0) mybotMove = botMove.nextInt(9);
                         position[mybotMove].performClick();
+                        countBotmove++;
                     }
                 }, 800);
             }
@@ -175,14 +184,18 @@ public class SinglePlayerEasy extends Activity implements View.OnClickListener {
 
         if(!gameActive){
             LayoutInflater inflater= getLayoutInflater();
-            View ResultAlertBox =inflater.inflate(R.layout.layout_game_result_2p_same_device,null);
+            View ResultAlertBox = inflater.inflate(R.layout.layout_game_result_2p_same_device, null);
+
+            final Dialog alertDialog = new Dialog(this);
+            alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            alertDialog.setContentView(ResultAlertBox);
+            alertDialog.setCancelable(false);
+            alertDialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.alertbackground));
+            alertDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+
             ReplayButton=(Button)ResultAlertBox.findViewById(R.id.ReplayButton);
             exitButton=(Button)ResultAlertBox.findViewById(R.id.ExitButton);
-            final AlertDialog.Builder builer=new AlertDialog.Builder(this);
-            ResultAlertBox.getBackground().setAlpha(0);
-            builer.setView(ResultAlertBox);
-            builer.setCancelable(false);
-            final AlertDialog alertDialog=builer.create();
+
             ReplayButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -191,6 +204,7 @@ public class SinglePlayerEasy extends Activity implements View.OnClickListener {
 
                 }
             });
+
             exitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -199,22 +213,33 @@ public class SinglePlayerEasy extends Activity implements View.OnClickListener {
                     SinglePlayerEasy.this.finish();
                 }
             });
-            // 1.8s delay before showing alert dialog
-            Handler handler=new Handler();
+
+            //0.5s delay before showing dialog
+            Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.RED));
                     alertDialog.show();
                 }
-            }, 1800);
-
-
+            }, 500);
         }
 
         else if(activeplayer==2){
             // Make the move for bot after delay of 800ms
             if(gameActive) {
+                if((!playermovedfirst && countBotmove==1) || countBotmove==0)
+                {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Random botMove = new Random();
+                            int mybotMove = botMove.nextInt(9);
+                            while (state[mybotMove] != 0) mybotMove = botMove.nextInt(9);
+                            position[mybotMove].performClick();
+                        }
+                    }, 800);
+                }
                 gameBoard.callMinimax(0,1);
                 gameCoordinate = gameBoard.returnBestMove();
                 Handler handler = new Handler();
@@ -224,6 +249,8 @@ public class SinglePlayerEasy extends Activity implements View.OnClickListener {
                         position[(gameCoordinate.x*3) + gameCoordinate.y].performClick();
                     }
                 }, 800);
+
+                countBotmove++;
             }
         }
 

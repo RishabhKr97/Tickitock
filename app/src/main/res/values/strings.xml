@@ -20,8 +20,8 @@
     <string name="SEWins">Wins</string>
     <string name="SELoses">Loses</string>
     <string name="SEDraws">Draws</string>
-    <string name="sps">1p Stats</string>
-    <string name="dps">2p Stats</string>
+    <string name="sps">Single Player Stats</string>
+    <string name="dps">Two Player Stats</string>
     <string name="title_activity_stats2">StatsActivity2</string>
     <string name="SDMode"><u>2p Same Device</u></string>
     <string name="SDWins">Player1</string>
