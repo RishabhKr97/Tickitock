@@ -26,5 +26,5 @@
     <string name="SDMode"><u>2p Same Device</u></string>
     <string name="SDWins">Player1</string>
     <string name="SDLoses">Player2</string>
-
+    <string name="ListViewTitle">Select Player Two</string>
 </resources>

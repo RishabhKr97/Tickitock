@@ -1,7 +1,6 @@
 package com.productions.rk.tickitock;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;

@@ -3,11 +3,9 @@ package com.productions.rk.tickitock;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
+import android.bluetooth.BluetoothAdapter;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -135,19 +133,39 @@ public class OptionScreen extends Activity {
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(true);
 
+        // Alert Dialog if device does not support bluetooth
+        final android.app.AlertDialog.Builder noBluetoothAlertBuilder = new android.app.AlertDialog.Builder(this);
+
         // setting up buttons
 
-        Button wifibutton = (Button) TwoPlayerLayout.findViewById(R.id.wifibutton);
+        Button bluetoothbutton = (Button) TwoPlayerLayout.findViewById(R.id.wifibutton);
         Button samedevicebutton = (Button) TwoPlayerLayout.findViewById(R.id.samedevicebutton);
 
         // setting on click listener
 
-        wifibutton.setOnClickListener(new View.OnClickListener() {
+        bluetoothbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Launch wifi game
-
                 dialog.cancel();
+                BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                if(mBluetoothAdapter==null){
+                    noBluetoothAlertBuilder.setMessage("Device does not support bluetooth");
+                    noBluetoothAlertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    android.app.AlertDialog noBluetoothAlert = noBluetoothAlertBuilder.create();
+                    noBluetoothAlert.show();
+                }
+                else{
+
+                    startActivity(new Intent(OptionScreen.this, BluetoothProcessHandling.class));
+                    OptionScreen.this.finish();
+                }
             }
         });
 

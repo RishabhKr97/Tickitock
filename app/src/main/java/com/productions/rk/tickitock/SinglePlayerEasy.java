@@ -2,19 +2,16 @@ package com.productions.rk.tickitock;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -93,22 +90,21 @@ public class SinglePlayerEasy extends Activity implements View.OnClickListener {
         position[7].setBackgroundResource(android.R.color.white);
         position[8].setBackgroundResource(android.R.color.white);
         if(playermovedfirst) {
-            player2moveindicator.setBackgroundColor(Color.argb(255,54,145,32));
+            player2moveindicator.setBackgroundColor(Color.argb(255, 54, 145, 32));
             player1moveindicator.setBackgroundColor(Color.argb(255, 222, 237, 222));
             activeplayer=2;
-            // Make the move for bot after delay of 800ms
             if(gameActive) {
+                gameBoard.callMinimax(0, 1);
+                gameCoordinate = gameBoard.returnBestMove();
+
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Random botMove = new Random();
-                        int mybotMove = botMove.nextInt(9);
-                        while (state[mybotMove] != 0) mybotMove = botMove.nextInt(9);
-                        position[mybotMove].performClick();
-                        countBotmove++;
+                        position[(gameCoordinate.x * 3) + gameCoordinate.y].performClick();
                     }
-                }, 800);
+                }, 200);
+                countBotmove++;
             }
             playermovedfirst = false;
         }
@@ -214,46 +210,34 @@ public class SinglePlayerEasy extends Activity implements View.OnClickListener {
                 }
             });
 
-            //0.5s delay before showing dialog
+            //alertDialog.show();
+            //0.2s delay before showing dialog
+
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     alertDialog.show();
                 }
-            }, 500);
+            }, 200);
         }
 
         else if(activeplayer==2){
             // Make the move for bot after delay of 800ms
             if(gameActive) {
-                if((!playermovedfirst && countBotmove==1) || countBotmove==0)
-                {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Random botMove = new Random();
-                            int mybotMove = botMove.nextInt(9);
-                            while (state[mybotMove] != 0) mybotMove = botMove.nextInt(9);
-                            position[mybotMove].performClick();
-                        }
-                    }, 800);
-                }
-                gameBoard.callMinimax(0,1);
+                gameBoard.callMinimax(0, 1);
                 gameCoordinate = gameBoard.returnBestMove();
+
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        position[(gameCoordinate.x*3) + gameCoordinate.y].performClick();
+                        position[(gameCoordinate.x * 3) + gameCoordinate.y].performClick();
                     }
-                }, 800);
-
+                }, 200);
                 countBotmove++;
             }
         }
-
     }
 
     private void win(int a,int b,int c){

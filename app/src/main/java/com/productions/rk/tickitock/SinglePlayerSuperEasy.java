@@ -2,7 +2,6 @@ package com.productions.rk.tickitock;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -86,7 +85,7 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
             player2moveindicator.setBackgroundColor(Color.argb(255,54,145,32));
             player1moveindicator.setBackgroundColor(Color.argb(255, 222, 237, 222));
             activeplayer=2;
-            // Make the move for bot after delay of 800ms
+            // Make the move for bot after delay of 200ms
             if(gameActive) {
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -97,7 +96,7 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
                         while (state[mybotMove] != 0) mybotMove = botMove.nextInt(9);
                         position[mybotMove].performClick();
                     }
-                }, 800);
+                }, 200);
             }
             playermovedfirst = false;
         }
@@ -198,18 +197,18 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
                 }
             });
 
-            //0.5s delay before showing dialog
+            //0.2s delay before showing dialog
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     alertDialog.show();
                 }
-            }, 500);
+            }, 200);
         }
 
         else if(activeplayer==2){
-            // Make the move for bot after delay of 800ms
+            // Make the move for bot after delay of 200ms
             if(gameActive) {
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -220,7 +219,7 @@ public class SinglePlayerSuperEasy extends Activity implements View.OnClickListe
                         while (state[mybotMove] != 0) mybotMove = botMove.nextInt(9);
                         position[mybotMove].performClick();
                     }
-                }, 800);
+                }, 200);
             }
         }
 
