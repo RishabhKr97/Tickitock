@@ -50,6 +50,7 @@ public class BluetoothProcessHandling extends Activity implements View.OnClickLi
     AcceptThread BluetoothServer;
     ConnectThread BluetoothClient;
     ConnectedThread BluetoothDataTransfer;
+    Thread BluetoothServerThread,BluetoothClientThread,BluetoothDataTransferThread;
     Handler BluetoothDataHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -122,8 +123,15 @@ public class BluetoothProcessHandling extends Activity implements View.OnClickLi
 
 
         BluetoothServer = new AcceptThread();
-        BluetoothServer.start();
-        BluetoothServer.run();
+        Runnable BluetoothServerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                BluetoothServer.run();
+            }
+        };
+        BluetoothServerThread = new Thread(BluetoothServerRunnable);
+        BluetoothServerThread.start();
+
         mBluetoothAdapter.startDiscovery();
 
         deviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -134,8 +142,14 @@ public class BluetoothProcessHandling extends Activity implements View.OnClickLi
                 DeviceMACAddress = info.substring(info.length() - 17);
                 BluetoothDevice ConnectToDevice = mBluetoothAdapter.getRemoteDevice(DeviceMACAddress);
                 BluetoothClient = new ConnectThread(ConnectToDevice);
-                BluetoothClient.start();
-                BluetoothClient.run();
+                Runnable BluetoothClientRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        BluetoothClient.run();
+                    }
+                };
+                BluetoothClientThread = new Thread(BluetoothClientRunnable);
+                BluetoothClientThread.start();
             }
         });
         /**   ************************************************
@@ -190,23 +204,20 @@ public class BluetoothProcessHandling extends Activity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(BluetoothProcessHandling.this, OptionScreen.class));
 
-        if(BluetoothServer.isAlive()){
-            BluetoothServer.interrupt();
+        if(BluetoothServerThread.isAlive()){
+            BluetoothServer.cancel();
         }
-        if(BluetoothClient.isAlive()){
-            BluetoothClient.interrupt();
+        if(BluetoothClientThread.isAlive()){
+            BluetoothClient.cancel();
         }
-        if(BluetoothDataTransfer.isAlive()){
-            BluetoothDataTransfer.interrupt();
+        if(BluetoothDataTransferThread.isAlive()){
+            BluetoothDataTransfer.cancel();
         }
         if(mBluetoothAdapter.isEnabled()){
             mBluetoothAdapter.disable();
         }
-        BluetoothClient.cancel();
-        BluetoothServer.cancel();
-        BluetoothDataTransfer.cancel();
+
         unregisterReceiver(mReceiver);
         saveStats(playerOnewin, playerTwowin, draws);
         startActivity(new Intent(BluetoothProcessHandling.this, OptionScreen.class));
@@ -216,21 +227,18 @@ public class BluetoothProcessHandling extends Activity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(BluetoothServer.isAlive()){
-            BluetoothServer.interrupt();
+        if(BluetoothServerThread.isAlive()){
+            BluetoothServer.cancel();
         }
-        if(BluetoothClient.isAlive()){
-            BluetoothClient.interrupt();
+        if(BluetoothClientThread.isAlive()){
+            BluetoothClient.cancel();
         }
-        if(BluetoothDataTransfer.isAlive()){
-            BluetoothDataTransfer.interrupt();
+        if(BluetoothDataTransferThread.isAlive()){
+            BluetoothDataTransfer.cancel();
         }
         if(mBluetoothAdapter.isEnabled()){
             mBluetoothAdapter.disable();
         }
-        BluetoothClient.cancel();
-        BluetoothServer.cancel();
-        BluetoothDataTransfer.cancel();
         unregisterReceiver(mReceiver);
     }
 
@@ -667,8 +675,15 @@ public class BluetoothProcessHandling extends Activity implements View.OnClickLi
      */
     public void ManageConnectedSocket(BluetoothSocket socket){
         BluetoothDataTransfer = new ConnectedThread(socket);
-        BluetoothDataTransfer.start();
-        BluetoothDataTransfer.run();
+        Runnable BluetoothDataTransferRunnable = new Runnable() {
+            @Override
+            public void run() {
+                BluetoothDataTransfer.run();
+            }
+        };
+        BluetoothDataTransferThread = new Thread(BluetoothDataTransferRunnable);
+        BluetoothDataTransferThread.start();
+
         Toast.makeText(getApplicationContext(),"Successful connection!",Toast.LENGTH_LONG).show();
     }
     /**   ************************************************
